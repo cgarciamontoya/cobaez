@@ -49,6 +49,14 @@ public class ValidacionesUtil {
                 errores.add("CURP MAYOR A 18 CARACTERES");
             }
         }
+        if (al.getNumImss() != null && !al.getNumImss().isEmpty()) {
+            if (al.getNumImss().length() > 11) {
+                errores.add("EL NUMERO IMSS NO DEBE EXCEDER LOS 11 CARACTERES");
+            }
+            if (!al.getNumImss().matches("^[\\d]*$")) {
+                errores.add("EL NUMERO IMSS DEBE SER NUMERICO");
+            }
+        }
         if (al.getTutor() == null || al.getTutor().isEmpty()) {
             errores.add("EL TUTOR ES REQUERIDO");
         }

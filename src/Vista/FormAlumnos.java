@@ -97,7 +97,7 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("VENTANA ALUMNOS");
+        setTitle("REGISTRO ALUMNOS");
         setName("ALUMNOS"); // NOI18N
         setPreferredSize(new java.awt.Dimension(680, 450));
 

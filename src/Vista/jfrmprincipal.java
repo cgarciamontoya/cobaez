@@ -31,6 +31,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
         menu = new javax.swing.JMenuBar();
         menuAlumnos = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        mnuAlConsulta = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,13 +49,21 @@ public class jfrmprincipal extends javax.swing.JFrame {
 
         menuAlumnos.setText("Alumnos");
 
-        jMenuItem2.setText("Alumnos");
+        jMenuItem2.setText("Registro");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registroAlumno(evt);
             }
         });
         menuAlumnos.add(jMenuItem2);
+
+        mnuAlConsulta.setText("Consulta");
+        mnuAlConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirConsulta(evt);
+            }
+        });
+        menuAlumnos.add(mnuAlConsulta);
 
         menu.add(menuAlumnos);
 
@@ -67,11 +76,11 @@ public class jfrmprincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -82,6 +91,12 @@ public class jfrmprincipal extends javax.swing.JFrame {
         jDesktopPane1.add(als);
         als.show();
     }//GEN-LAST:event_registroAlumno
+
+    private void abrirConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirConsulta
+        FormAlumnosConsulta fac = new FormAlumnosConsulta();
+        jDesktopPane1.add(fac);
+        fac.show();
+    }//GEN-LAST:event_abrirConsulta
 
     /**
      * @param args the command line arguments
@@ -124,6 +139,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAlumnos;
+    private javax.swing.JMenuItem mnuAlConsulta;
     // End of variables declaration//GEN-END:variables
 
   
