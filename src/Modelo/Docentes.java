@@ -11,38 +11,15 @@
 package Modelo;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "docentes")
-@NamedQueries({
-    @NamedQuery(name = "Docentes.findAll", query = "SELECT d FROM Docentes d")})
 public class Docentes implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idDocente")
     private Integer idDocente;
-    @Column(name = "Nombre")
     private String nombre;
-    @Column(name = "Apepaterno")
     private String apepaterno;
-    @Column(name = "Apematerno")
     private String apematerno;
-    @Column(name = "Telefono")
     private Integer telefono;
-    @Column(name = "Num_Empleados")
     private Integer numEmpleados;
-    @Column(name = "Correo")
     private String correo;
 
     public Docentes() {

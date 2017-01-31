@@ -12,32 +12,11 @@ package Modelo;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "estados")
-@NamedQueries({
-    @NamedQuery(name = "Estados.findAll", query = "SELECT e FROM Estados e")})
 public class Estados implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idEstados")
     private Integer idEstados;
-    @Column(name = "Nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadosidEstados")
     private List<Municipios> municipiosList;
 
     public Estados() {

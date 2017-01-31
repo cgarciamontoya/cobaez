@@ -12,34 +12,12 @@ package Modelo;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "grupos")
-@NamedQueries({
-    @NamedQuery(name = "Grupos.findAll", query = "SELECT g FROM Grupos g")})
 public class Grupos implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idGrupo")
     private Integer idGrupo;
-    @Column(name = "Grupo")
     private String grupo;
-    @Column(name = "Semestre")
     private String semestre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gruposidGrupo")
     private List<Alumnos> alumnosList;
 
     public Grupos() {

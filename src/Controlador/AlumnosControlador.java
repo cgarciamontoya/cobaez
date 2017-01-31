@@ -32,8 +32,8 @@ public class AlumnosControlador extends ControladorBase {
     
     public Alumnos guardar(Alumnos al) throws ControlEscolarException {
         StringBuilder query = new StringBuilder();
-        query.append("inser into alumnos (grupos_idgrupo, nombre, apepaterno, apematerno, fecha_nacimiento, telefono, curp, ")
-                .append("tutor, tipo_sangre, num_imss, sexo, fecha_registro, activo) values(");
+        query.append("insert into alumnos (grupos_idgrupo, nombre, apepaterno, apematerno, fecha_nacimiento, telefono, curp, ")
+                .append("tutor, tipo_sangre, num_imss, sexo, fecha_registro, fecha_actualizacion, activo) values(");
 
         query.append(al.getGrupo()).append(", '")
                 .append(al.getNombre().toUpperCase()).append("', '")
@@ -70,7 +70,8 @@ public class AlumnosControlador extends ControladorBase {
         } else {
             query.append("null, ");
         }
-        query.append("'").append(sdf.format(new Date())).append("', 1)");
+        query.append("'").append(sdf.format(new Date())).append("', '")
+                .append(sdf.format(new Date())).append("', 1)");
         
         try {
             Connection con = getConnection();

@@ -317,11 +317,11 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_guardarAlumno
 
     private String mensajeValidacion(List<String> errores) {
-        String error = "No se puede guardar el registro por los siguientes errores de validación: ";
+        String error = "No se puede guardar el registro por los siguientes errores de validación: \n\r";
         for (String er : errores) {
-            error += er + ", ";
+            error += "\t* " + er + "\n\r";
         }
-        return error.substring(0, (error.length() - 2));
+        return error;
     }
     
     private void cargarCatalogos() {

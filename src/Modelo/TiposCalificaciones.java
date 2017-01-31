@@ -11,28 +11,10 @@
 package Modelo;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "tipos_calificaciones")
-@NamedQueries({
-    @NamedQuery(name = "TiposCalificaciones.findAll", query = "SELECT t FROM TiposCalificaciones t")})
 public class TiposCalificaciones implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idTipo_Calificacion")
     private Integer idTipoCalificacion;
-    @Column(name = "Nombre")
     private String nombre;
 
     public TiposCalificaciones() {
