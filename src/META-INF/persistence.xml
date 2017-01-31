@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="SistemaCobaezPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>Modelo.Estatus</class>
+    <class>Modelo.Alumnos</class>
+    <class>Modelo.Municipios</class>
+    <class>Modelo.TiposTelefonos</class>
+    <class>Modelo.Materias</class>
+    <class>Modelo.Horarios</class>
+    <class>Modelo.Docentes</class>
+    <class>Modelo.CiclosEscolares</class>
+    <class>Modelo.Grupos</class>
+    <class>Modelo.Telefonos</class>
+    <class>Modelo.TiposCalificaciones</class>
+    <class>Modelo.Comunidades</class>
+    <class>Modelo.Estados</class>
+    <class>Modelo.Calificaciones</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/conesc?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="porty"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>
