@@ -295,7 +295,7 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         alumno.setSexo(cboSexo.getSelectedItem().toString());
         Grupos gpoBD = catalogos.consultaGrupo(cboGrupos.getSelectedItem().toString());
         if (gpoBD != null) {
-            alumno.setGrupo(gpoBD.getIdGrupo());
+            alumno.getGrupo().setIdGrupo(gpoBD.getIdGrupo());
         }
        
         List<String> errores = ValidacionesUtil.validarAlumno(alumno);

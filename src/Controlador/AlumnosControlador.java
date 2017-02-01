@@ -13,6 +13,7 @@ package Controlador;
 import Exceptions.CodigoError;
 import Exceptions.ControlEscolarException;
 import Modelo.Alumnos;
+import Modelo.Grupos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,7 +90,7 @@ public class AlumnosControlador extends ControladorBase {
         Alumnos al = new Alumnos();
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("select a.idAlumno, a.grupos_idgrupo, a.nombre, a.apepaterno, a.apematerno, a.fecha_nacimiento, a.telefono, a.curp, ")
+            sb.append("select a.idAlumno, g.idgrupo, g.semestre, g.grupo, a.nombre, a.apepaterno, a.apematerno, a.fecha_nacimiento, a.telefono, a.curp, ")
                     .append("a.tutor, a.tipo_sangre, a.num_imss, a.sexo, a.fecha_registro, a.fecha_actualizacion, a.activo from alumnos a ")
                     .append("inner join grupos g on g.idgrupo = a.grupos_idgrupo ")
                     .append("where a.idAlumno = ")
@@ -97,7 +98,11 @@ public class AlumnosControlador extends ControladorBase {
             ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
             while(rs.next()) {
                 al.setIdAlumno(rs.getInt("idAlumno"));
-                al.setGrupo(rs.getInt("grupos_idgrupo"));
+                Grupos gpo = new Grupos();
+                gpo.setIdGrupo(rs.getInt("idgrupo"));
+                gpo.setSemestre(rs.getString("semestre"));
+                gpo.setGrupo(rs.getString("grupo"));
+                al.setGrupo(gpo);
                 al.setNombre(rs.getString("nombre"));
                 al.setApepaterno(rs.getString("apepaterno"));
                 al.setApematerno(rs.getString("apematerno"));

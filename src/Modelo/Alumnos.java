@@ -26,12 +26,13 @@ public class Alumnos implements Serializable {
     private String tipoSangre;
     private String numImss;
     private String sexo;
-    private int grupo;
+    private Grupos grupo;
     private Date fechaRegistro;
     private Date fechaActualizacion;
     private boolean activo;
 
     public Alumnos() {
+        this.grupo = new Grupos();
     }
 
     public Alumnos(Integer idAlumno) {
@@ -126,11 +127,11 @@ public class Alumnos implements Serializable {
         this.numImss = numImss;
     }
 
-    public int getGrupo() {
+    public Grupos getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(int grupo) {
+    public void setGrupo(Grupos grupo) {
         this.grupo = grupo;
     }
 

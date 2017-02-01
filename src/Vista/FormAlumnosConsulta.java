@@ -12,6 +12,8 @@ import Modelo.Alumnos;
 import Modelo.Grupos;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -187,12 +189,29 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
         if (filtrosValidos()) {
             try {
                 List<Alumnos> resultado = controlador.buscar(alumno);
+                if (resultado != null && !resultado.isEmpty()) {
+                    limpiarTabla();
+                    DefaultTableModel modelo = (DefaultTableModel) tblResultados.getModel();
+                    for (Alumnos al : resultado) {
+                        modelo.addRow(new Object[] {
+                            al.getIdAlumno(), al.getNombre(), al.getApepaterno(), al.getApematerno(), 
+                            (al.getGrupo().getSemestre() + " " + al.getGrupo().getGrupo())
+                        });
+                    }
+                }
             } catch (ControlEscolarException ex) {
-                
+                JOptionPane.showMessageDialog(this, "No fue posible consultar los alumnos debido a: " + ex.getMessage(),
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_buscarAlumnos
 
+    private void limpiarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblResultados.getModel();
+        while(modelo.getRowCount() != 0) {
+            modelo.removeRow(modelo.getRowCount() - 1);
+        }
+    }
     private boolean filtrosValidos() {
         int contador = 0;
         if (txtMatricula.getText() != null && !txtMatricula.getText().isEmpty() &&
@@ -201,8 +220,7 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
             contador++;
         }
         if (cboGrupo.getSelectedItem() != null && !cboGrupo.getSelectedItem().toString().isEmpty()) {
-            Grupos gpo = catalogos.consultaGrupo(cboGrupo.getSelectedItem().toString());
-            alumno.setGrupo(gpo.getIdGrupo());
+            alumno.setGrupo(catalogos.consultaGrupo(cboGrupo.getSelectedItem().toString()));
             contador++;
         }
         if (txtNombre.getText() != null && !txtNombre.getText().isEmpty()) {
