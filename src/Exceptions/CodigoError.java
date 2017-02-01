@@ -13,4 +13,5 @@ package Exceptions;
 public class CodigoError {
 
     public static final int ALUMNO_ERROR_GUARDAR = 1;
+    public static final int ALUMNO_ERROR_ELIMINAR = 2;
 }

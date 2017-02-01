@@ -9,7 +9,6 @@ import Controlador.AlumnosControlador;
 import Controlador.CatalogosControlador;
 import Exceptions.ControlEscolarException;
 import Modelo.Alumnos;
-import Modelo.Grupos;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -19,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author cgarcia
  */
-public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
+public class FormAlumnosConsulta extends FormBase {
 
     private Alumnos alumno;
     private AlumnosControlador controlador;
@@ -104,7 +103,7 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -113,6 +112,11 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblResultados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                seleccionarRegistro(evt);
             }
         });
         jScrollPane1.setViewportView(tblResultados);
@@ -186,6 +190,7 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
 
     private void buscarAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarAlumnos
         alumno = new Alumnos();
+        limpiarTabla();
         if (filtrosValidos()) {
             try {
                 List<Alumnos> resultado = controlador.buscar(alumno);
@@ -198,14 +203,16 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
                             (al.getGrupo().getSemestre() + " " + al.getGrupo().getGrupo())
                         });
                     }
+                } else {
+                    agregarMensajeAdvertencia("No se encontraron resultados");
                 }
             } catch (ControlEscolarException ex) {
-                JOptionPane.showMessageDialog(this, "No fue posible consultar los alumnos debido a: " + ex.getMessage(),
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+                agregarMensajeError("No fue posible consultar los alumnos debido a: " + ex.getMessage());
             }
         }
     }//GEN-LAST:event_buscarAlumnos
 
+    
     private void limpiarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblResultados.getModel();
         while(modelo.getRowCount() != 0) {
@@ -238,8 +245,28 @@ public class FormAlumnosConsulta extends javax.swing.JInternalFrame {
         return contador > 0;
     }
     private void limpiarFormulario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarFormulario
-        // TODO add your handling code here:
+        txtMatricula.setText("");
+        cboGrupo.setSelectedIndex(0);
+        txtNombre.setText("");
+        txtPaterno.setText("");
+        txtMaterno.setText("");
+        limpiarTabla();
     }//GEN-LAST:event_limpiarFormulario
+
+    private void seleccionarRegistro(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_seleccionarRegistro
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        int idAlumno = (Integer) model.getValueAt(tblResultados.getSelectedRow(), 0);
+        if (idAlumno > 0) {
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Desea abrir los datos del alumno?", 
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                FormAlumnos als = new FormAlumnos(idAlumno);
+                this.getParent().add(als);
+                als.show();
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_seleccionarRegistro
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

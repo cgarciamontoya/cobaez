@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  *
  * @author CAROL
  */
-public class FormAlumnos extends javax.swing.JInternalFrame {
+public class FormAlumnos extends FormBase {
     private static final long serialVersionUID = -3918940150484696627L;
 
     /**
@@ -40,6 +40,7 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         catalogos = new CatalogosControlador();
         cargarCatalogos();
        txtFechaReg.setText(sdf.format(new Date()));
+       btnEliminar.setVisible(false);
         
     }
     
@@ -91,6 +92,7 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         btnLimpiar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cboSexo = new javax.swing.JComboBox();
+        btnEliminar = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -154,6 +156,13 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
 
         cboSexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MASCULINO", "FEMENINO" }));
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarAlumno(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,6 +193,8 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(cboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnEliminar)
+                                        .addGap(9, 9, 9)
                                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -270,7 +281,8 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnGuardar)
-                    .addComponent(btnLimpiar))
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnEliminar))
                 .addGap(28, 28, 28))
         );
 
@@ -304,15 +316,12 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         if (errores == null || errores.isEmpty()) {
             try {
                 controlador.guardar(alumno);
-                JOptionPane.showMessageDialog(this, "El registro fue guardado correctamente",
-                    "Exito", JOptionPane.INFORMATION_MESSAGE);
+                agregarMensajeExito("El registro fue guardado correctamente");
             } catch (ControlEscolarException ex) {
-                JOptionPane.showMessageDialog(this, "Error al registrar el alumno: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                agregarMensajeError("Error al registrar el alumno: " + ex.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, mensajeValidacion(errores),
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            agregarMensajeAdvertencia(mensajeValidacion(errores));
         }
     }//GEN-LAST:event_guardarAlumno
 
@@ -328,7 +337,18 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         cboGrupos.setModel(new DefaultComboBoxModel(catalogos.consultaGrupos().toArray()));
     }
     private void cargarDatos() {
-        
+        txtMatricula.setText(String.valueOf(alumno.getIdAlumno()));
+        txtNombre.setText(alumno.getNombre());
+        txtPaterno.setText(alumno.getApepaterno());
+        txtMaterno.setText(alumno.getApematerno() != null ? alumno.getApematerno() : "");
+        txtFechaNac.setText(alumno.getFechaNacimiento() != null ? sdf.format(alumno.getFechaNacimiento()) : "");
+        txtTelefono.setText(alumno.getTelefono() != null ? alumno.getTelefono() : "");
+        txtCurp.setText(alumno.getCurp() != null ? alumno.getCurp(): "");
+        txtTipoSangre.setText(alumno.getTipoSangre() != null ? alumno.getTipoSangre() : "");
+        txtImss.setText(alumno.getNumImss() != null ? alumno.getNumImss() : "");
+        cboSexo.setSelectedIndex(alumno.getGrupo().getIdGrupo() - 1);
+        txtTutor.setText(alumno.getTutor() != null ? alumno.getTutor(): "");
+        txtFechaReg.setText(sdf.format(alumno.getFechaRegistro()));
     }
     private void limpiarFormulario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarFormulario
         txtNombre.setText("");
@@ -347,9 +367,24 @@ public class FormAlumnos extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_cancelarRegistro
 
+    private void eliminarAlumno(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarAlumno
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar el alumno?", 
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                try {
+                    controlador.eliminar(Integer.parseInt(txtMatricula.getText()));
+                    agregarMensajeExito("El alumno fue eliminado correctamente");
+                    this.dispose();
+                } catch (ControlEscolarException e) {
+                    agregarMensajeError(e.getMessage());
+                }
+            }
+    }//GEN-LAST:event_eliminarAlumno
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox cboGrupos;
