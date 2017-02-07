@@ -11,6 +11,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Docentes implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,9 +19,11 @@ public class Docentes implements Serializable {
     private String nombre;
     private String apepaterno;
     private String apematerno;
-    private Integer telefono;
-    private Integer numEmpleados;
+    private String telefono;
+    private String numEmpleados;
     private String correo;
+    private boolean activo;
+    private Date fechaRegistro;
 
     public Docentes() {
     }
@@ -61,19 +64,19 @@ public class Docentes implements Serializable {
         this.apematerno = apematerno;
     }
 
-    public Integer getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
-    public Integer getNumEmpleados() {
+    public String getNumEmpleados() {
         return numEmpleados;
     }
 
-    public void setNumEmpleados(Integer numEmpleados) {
+    public void setNumEmpleados(String numEmpleados) {
         this.numEmpleados = numEmpleados;
     }
 
@@ -84,6 +87,24 @@ public class Docentes implements Serializable {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+    
+    
 
     @Override
     public int hashCode() {

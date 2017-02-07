@@ -325,14 +325,6 @@ public class FormAlumnos extends FormBase {
         }
     }//GEN-LAST:event_guardarAlumno
 
-    private String mensajeValidacion(List<String> errores) {
-        String error = "No se puede guardar el registro por los siguientes errores de validación: \n\r";
-        for (String er : errores) {
-            error += "\t* " + er + "\n\r";
-        }
-        return error;
-    }
-    
     private void cargarCatalogos() {
         cboGrupos.setModel(new DefaultComboBoxModel(catalogos.consultaGrupos().toArray()));
     }

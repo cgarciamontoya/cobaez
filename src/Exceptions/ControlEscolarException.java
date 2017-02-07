@@ -19,6 +19,9 @@ public class ControlEscolarException extends Throwable {
     public ControlEscolarException() {
     }
 
+    public ControlEscolarException(String mensaje) {
+        super(mensaje);
+    }
     public ControlEscolarException(Throwable cause) {
         super(cause);
     }

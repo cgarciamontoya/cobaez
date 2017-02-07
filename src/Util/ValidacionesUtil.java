@@ -11,6 +11,7 @@
 package Util;
 
 import Modelo.Alumnos;
+import Modelo.Docentes;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -61,6 +62,33 @@ public class ValidacionesUtil {
             errores.add("EL TUTOR ES REQUERIDO");
         }
         
+        return errores;
+    }
+    
+    public static List<String> validarDocente(Docentes doc) {
+        List<String> errores = new ArrayList<>();
+        if (doc.getNumEmpleados() == null || doc.getNumEmpleados().isEmpty()) {
+            errores.add("EL NUMERO DE EMPLEADO ES REQUERIDO");
+        }
+        if (doc.getNombre() == null || doc.getNombre().trim().isEmpty()) {
+            errores.add("EL NOMBRE ES REQUERIDO");
+        }
+        if (doc.getApepaterno() == null || doc.getApepaterno().trim().isEmpty()) {
+            errores.add("EL APELLIDO PATERNO ES REQUERIDO");
+        }
+        if (doc.getTelefono() == null || doc.getTelefono().trim().isEmpty()) {
+            errores.add("EL TELEFONO ES REQUERIDO");
+        } else {
+            if (!doc.getTelefono().matches("^[\\d]*$")) {
+                errores.add("EL TELEFONO DEBE SER NUMERICO");
+            }
+            if (doc.getTelefono().trim().length() > 10) {
+                errores.add("EL TELEFONO NO DEBE EXCEDER LOS 1O DIGITOS");
+            }
+        }
+        if (doc.getCorreo() == null || doc.getCorreo().isEmpty()) {
+            errores.add("EL CORREO ELECTRONICO ES REQUERIDO");
+        }
         return errores;
     }
 }

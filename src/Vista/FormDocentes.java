@@ -5,17 +5,51 @@
  */
 package Vista;
 
+import Controlador.DocentesControlador;
+import Exceptions.ControlEscolarException;
+import Modelo.Docentes;
+import Util.ValidacionesUtil;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author cgarcia
  */
-public class FormDocentes extends javax.swing.JInternalFrame {
+public class FormDocentes extends FormBase {
 
+    private DocentesControlador controlador;
+    private Docentes doc;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form FormDocentes
      */
     public FormDocentes() {
         initComponents();
+        controlador = new DocentesControlador();
+        btnEliminar.setVisible(false);
+        txtFechaRegistro.setText(sdf.format(new Date()));
+    }
+    
+    public FormDocentes(int id) {
+        initComponents();
+        controlador = new DocentesControlador();
+        try {
+            doc = controlador.getById(id);
+            txtMatricula.setText(String.valueOf(doc.getIdDocente()));
+            txtFechaRegistro.setText(sdf.format(doc.getFechaRegistro()));
+            txtNumEmpleado.setText(doc.getNumEmpleados());
+            txtNombre.setText(doc.getNombre());
+            txtPaterno.setText(doc.getApepaterno());
+            txtMaterno.setText(doc.getApematerno());
+            txtTelefono.setText(doc.getTelefono());
+            txtCorreo.setText(doc.getCorreo());
+            
+        } catch (ControlEscolarException ex) {
+            agregarMensajeError(ex.getMessage());
+        }
     }
 
     /**
@@ -55,6 +89,8 @@ public class FormDocentes extends javax.swing.JInternalFrame {
 
         jLabel1.setText("MATRICULA");
 
+        txtMatricula.setEditable(false);
+
         jLabel2.setText("NUMERO EMPLEADO");
 
         jLabel3.setText("NOMBRE");
@@ -65,17 +101,39 @@ public class FormDocentes extends javax.swing.JInternalFrame {
 
         jLabel6.setText("FECHA REGISTRO");
 
+        txtFechaRegistro.setEditable(false);
+
         jLabel7.setText("TELEFONO");
 
         jLabel8.setText("CORREO ELECTRONICO");
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarRegistro(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarDocente(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiarFormulario(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarDocente(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,6 +228,59 @@ public class FormDocentes extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void guardarDocente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarDocente
+        doc = new Docentes();
+        doc.setNumEmpleados(txtNumEmpleado.getText());
+        if (txtMatricula.getText() != null && !txtMatricula.getText().isEmpty()) {
+            doc.setIdDocente(Integer.parseInt(txtMatricula.getText()));
+        }
+        doc.setNombre(txtNombre.getText());
+        doc.setApepaterno(txtPaterno.getText());
+        doc.setApematerno(txtMaterno.getText());
+        doc.setTelefono(txtTelefono.getText());
+        doc.setCorreo(txtCorreo.getText());
+                
+        List<String> errores = ValidacionesUtil.validarDocente(doc);
+        
+        if (errores == null || errores.isEmpty()) {
+            try {
+                controlador.guardar(doc);
+                agregarMensajeExito("El registro fue guardado correctamente");
+            } catch (ControlEscolarException ex) {
+                agregarMensajeError("Error al registrar el docente: " + ex.getMessage());
+            }
+        } else {
+            agregarMensajeAdvertencia(mensajeValidacion(errores));
+        }
+    }//GEN-LAST:event_guardarDocente
+
+    private void cancelarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarRegistro
+        this.dispose();
+    }//GEN-LAST:event_cancelarRegistro
+
+    private void limpiarFormulario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarFormulario
+        txtNumEmpleado.setText("");
+        txtNombre.setText("");
+        txtPaterno.setText("");
+        txtMaterno.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
+    }//GEN-LAST:event_limpiarFormulario
+
+    private void eliminarDocente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarDocente
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar el docente?", 
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                try {
+                    controlador.eliminar(Integer.parseInt(txtMatricula.getText()));
+                    agregarMensajeExito("El docente fue eliminado correctamente");
+                    this.dispose();
+                } catch (ControlEscolarException e) {
+                    agregarMensajeError(e.getMessage());
+                }
+            }
+    }//GEN-LAST:event_eliminarDocente
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

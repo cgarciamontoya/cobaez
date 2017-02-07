@@ -5,17 +5,29 @@
  */
 package Vista;
 
+import Controlador.DocentesControlador;
+import Exceptions.ControlEscolarException;
+import Modelo.Alumnos;
+import Modelo.Docentes;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author cgarcia
  */
-public class FormDocentesConsulta extends javax.swing.JInternalFrame {
+public class FormDocentesConsulta extends FormBase {
 
+    private DocentesControlador controlador;
+    private Docentes doc;
     /**
      * Creates new form FormDocentesConsulta
      */
     public FormDocentesConsulta() {
         initComponents();
+        controlador = new DocentesControlador();
+        doc = new Docentes();
     }
 
     /**
@@ -40,7 +52,7 @@ public class FormDocentesConsulta extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblResultados = new javax.swing.JTable();
 
         setClosable(true);
         setMaximizable(true);
@@ -58,10 +70,20 @@ public class FormDocentesConsulta extends javax.swing.JInternalFrame {
         jLabel5.setText("APELLIDO MATERNO");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarDocentes(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparFormulario(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -84,7 +106,12 @@ public class FormDocentesConsulta extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tblResultados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                seleccionarRegistro(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblResultados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,6 +182,84 @@ public class FormDocentesConsulta extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscarDocentes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarDocentes
+        doc = new Docentes();
+        limpiarTabla();
+        if (filtrosValidos()) {
+            try {
+                List<Docentes> resultado = controlador.buscar(doc);
+                if (resultado != null && !resultado.isEmpty()) {
+                    limpiarTabla();
+                    DefaultTableModel modelo = (DefaultTableModel) tblResultados.getModel();
+                    for (Docentes al : resultado) {
+                        modelo.addRow(new Object[] {
+                            al.getIdDocente(), al.getNumEmpleados(), al.getNombre(),
+                            al.getApepaterno(), al.getApematerno()
+                        });
+                    }
+                } else {
+                    agregarMensajeAdvertencia("No se encontraron resultados");
+                }
+            } catch (ControlEscolarException ex) {
+                agregarMensajeError("No fue posible consultar los alumnos debido a: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_buscarDocentes
+    private void limpiarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblResultados.getModel();
+        while(modelo.getRowCount() != 0) {
+            modelo.removeRow(modelo.getRowCount() - 1);
+        }
+    }
+    private boolean filtrosValidos() {
+        int contador = 0;
+        if (txtMatricula.getText() != null && !txtMatricula.getText().isEmpty() &&
+                txtMatricula.getText().matches("^[\\d]*$")) {
+            doc.setIdDocente(Integer.parseInt(txtMatricula.getText()));
+            contador++;
+        }
+        if (txtNumEmpleado.getText() != null && !txtNumEmpleado.getText().isEmpty()) {
+            doc.setNumEmpleados(txtNumEmpleado.getText());
+            contador++;
+        }
+        if (txtNombre.getText() != null && !txtNombre.getText().isEmpty()) {
+            doc.setNombre(txtNombre.getText());
+            contador++;
+        }
+        if (txtPaterno.getText() != null && !txtPaterno.getText().isEmpty()) {
+            doc.setApepaterno(txtPaterno.getText());
+            contador++;
+        }
+        if (txtMaterno.getText() != null && !txtMaterno.getText().isEmpty()) {
+            doc.setApematerno(txtMaterno.getText());
+            contador++;
+        }
+        return contador > 0;
+    }
+    private void limparFormulario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparFormulario
+        limpiarTabla();
+        txtMatricula.setText("");
+        txtNumEmpleado.setText("");
+        txtNombre.setText("");
+        txtPaterno.setText("");
+        txtMaterno.setText("");
+    }//GEN-LAST:event_limparFormulario
+
+    private void seleccionarRegistro(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_seleccionarRegistro
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        int id = (Integer) model.getValueAt(tblResultados.getSelectedRow(), 0);
+        if (id > 0) {
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Desea abrir los datos del Docente?", 
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                FormDocentes docs = new FormDocentes(id);
+                this.getParent().add(docs);
+                docs.show();
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_seleccionarRegistro
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -165,7 +270,7 @@ public class FormDocentesConsulta extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblResultados;
     private javax.swing.JTextField txtMaterno;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNombre;

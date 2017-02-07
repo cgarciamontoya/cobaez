@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,5 +25,13 @@ public class FormBase extends javax.swing.JInternalFrame {
     
     public void agregarMensajeAdvertencia(String advertencia) {
         JOptionPane.showMessageDialog(this, advertencia, "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public String mensajeValidacion(List<String> errores) {
+        String error = "No se puede guardar el registro por los siguientes errores de validación: \n\r";
+        for (String er : errores) {
+            error += "\t* " + er + "\n\r";
+        }
+        return error;
     }
 }
