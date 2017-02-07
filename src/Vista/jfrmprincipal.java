@@ -16,6 +16,11 @@ public class jfrmprincipal extends javax.swing.JFrame {
      */
     public jfrmprincipal() {
         initComponents();
+        /*menuAlumnos.setVisible(false);
+        menuDocentes.setVisible(false);
+        FormLogin login = new FormLogin();
+        jDesktopPane1.add(login);
+        login.show();*/
     }
 
     /**
@@ -32,7 +37,16 @@ public class jfrmprincipal extends javax.swing.JFrame {
         menuAlumnos = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         mnuAlConsulta = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mnuAlCardex = new javax.swing.JMenuItem();
+        menuDocentes = new javax.swing.JMenu();
+        mnuDocRegistro = new javax.swing.JMenuItem();
+        mnuDocConsulta = new javax.swing.JMenuItem();
+        menuMaterias = new javax.swing.JMenu();
+        mnuMatRegistro = new javax.swing.JMenuItem();
+        mnuMatDocentes = new javax.swing.JMenuItem();
+        menuReportes = new javax.swing.JMenu();
+        mnuRepAlumnos = new javax.swing.JMenuItem();
+        mnuRepCalificaciones = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,10 +79,85 @@ public class jfrmprincipal extends javax.swing.JFrame {
         });
         menuAlumnos.add(mnuAlConsulta);
 
+        mnuAlCardex.setText("Cardex");
+        mnuAlCardex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cardexAlumnos(evt);
+            }
+        });
+        menuAlumnos.add(mnuAlCardex);
+
         menu.add(menuAlumnos);
 
-        jMenu2.setText("Menu");
-        menu.add(jMenu2);
+        menuDocentes.setText("Docentes");
+        menuDocentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroDocentes(evt);
+            }
+        });
+
+        mnuDocRegistro.setText("Registro");
+        mnuDocRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroDocentes(evt);
+            }
+        });
+        menuDocentes.add(mnuDocRegistro);
+
+        mnuDocConsulta.setText("Consulta");
+        mnuDocConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultaDocentes(evt);
+            }
+        });
+        menuDocentes.add(mnuDocConsulta);
+
+        menu.add(menuDocentes);
+
+        menuMaterias.setText("Materias");
+        menuMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroMaterias(evt);
+            }
+        });
+
+        mnuMatRegistro.setText("Registro Materias");
+        mnuMatRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroMaterias(evt);
+            }
+        });
+        menuMaterias.add(mnuMatRegistro);
+
+        mnuMatDocentes.setText("Asignación a Docentes");
+        mnuMatDocentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                materiasDocentes(evt);
+            }
+        });
+        menuMaterias.add(mnuMatDocentes);
+
+        menu.add(menuMaterias);
+
+        menuReportes.setText("Reportes");
+
+        mnuRepAlumnos.setText("Alumnos");
+        mnuRepAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reporteAlumnos(evt);
+            }
+        });
+        menuReportes.add(mnuRepAlumnos);
+
+        mnuRepCalificaciones.setText("Calificaciones");
+        mnuRepCalificaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reporteCalificaciones(evt);
+            }
+        });
+        menuReportes.add(mnuRepCalificaciones);
+
+        menu.add(menuReportes);
 
         setJMenuBar(menu);
 
@@ -97,6 +186,48 @@ public class jfrmprincipal extends javax.swing.JFrame {
         jDesktopPane1.add(fac);
         fac.show();
     }//GEN-LAST:event_abrirConsulta
+
+    private void registroDocentes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroDocentes
+        FormDocentes doc = new FormDocentes();
+        jDesktopPane1.add(doc);
+        doc.show();
+    }//GEN-LAST:event_registroDocentes
+
+    private void consultaDocentes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaDocentes
+        FormDocentesConsulta docCons = new FormDocentesConsulta();
+        jDesktopPane1.add(docCons);
+        docCons.show();
+    }//GEN-LAST:event_consultaDocentes
+
+    private void registroMaterias(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroMaterias
+        FormMaterias mat = new FormMaterias();
+        jDesktopPane1.add(mat);
+        mat.show();
+    }//GEN-LAST:event_registroMaterias
+
+    private void materiasDocentes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_materiasDocentes
+        FormMateriasDocentes md = new FormMateriasDocentes();
+        jDesktopPane1.add(md);
+        md.show();
+    }//GEN-LAST:event_materiasDocentes
+
+    private void reporteAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteAlumnos
+        FormReporteAlumnos ra = new FormReporteAlumnos();
+        jDesktopPane1.add(ra);
+        ra.show();
+    }//GEN-LAST:event_reporteAlumnos
+
+    private void reporteCalificaciones(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteCalificaciones
+        FormReporteCalificaciones rc = new FormReporteCalificaciones();
+        jDesktopPane1.add(rc);
+        rc.show();
+    }//GEN-LAST:event_reporteCalificaciones
+
+    private void cardexAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardexAlumnos
+        FormAlumnosCardex card = new FormAlumnosCardex();
+        jDesktopPane1.add(card);
+        card.show();
+    }//GEN-LAST:event_cardexAlumnos
 
     /**
      * @param args the command line arguments
@@ -135,11 +266,20 @@ public class jfrmprincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAlumnos;
+    private javax.swing.JMenu menuDocentes;
+    private javax.swing.JMenu menuMaterias;
+    private javax.swing.JMenu menuReportes;
+    private javax.swing.JMenuItem mnuAlCardex;
     private javax.swing.JMenuItem mnuAlConsulta;
+    private javax.swing.JMenuItem mnuDocConsulta;
+    private javax.swing.JMenuItem mnuDocRegistro;
+    private javax.swing.JMenuItem mnuMatDocentes;
+    private javax.swing.JMenuItem mnuMatRegistro;
+    private javax.swing.JMenuItem mnuRepAlumnos;
+    private javax.swing.JMenuItem mnuRepCalificaciones;
     // End of variables declaration//GEN-END:variables
 
   
