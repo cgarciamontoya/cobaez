@@ -16,6 +16,7 @@ public class Materias implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer idMateria;
     private String nombre;
+    private Integer semestre;
 
     public Materias() {
     }
@@ -39,6 +40,16 @@ public class Materias implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+    
+    
 
     @Override
     public int hashCode() {
