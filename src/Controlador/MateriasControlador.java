@@ -122,16 +122,20 @@ public class MateriasControlador extends ControladorBase {
         }
     }
     
-    public List<String> consultaPorDocente(int idDocente) {
+    public List<Materias> consultaPorDocente(int idDocente) {
         try {
-            List<String> lista = new ArrayList<>();
+            List<Materias> lista = new ArrayList<>();
             StringBuilder sb = new StringBuilder();
-            sb.append("select concat(m.idmateria, ' - ', m.nombre) nombre from docentes_materias dm ")
+            sb.append("select m.idmateria, m.nombre, m.semestre from docentes_materias dm ")
                     .append("inner join docentes d on d.iddocente = dm.iddocente ")
                     .append("inner join materias m on m.idmateria = dm.idmateria order by nombre");
             ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
             while (rs.next()) {
-                lista.add(rs.getString("nombre"));
+                Materias mat = new Materias();
+                mat.setIdMateria(rs.getInt("idmateria"));
+                mat.setNombre(rs.getString("nombre"));
+                mat.setSemestre(rs.getInt("semestre"));
+                lista.add(mat);
             }
             return lista;
         } catch (SQLException ex) {
@@ -141,18 +145,37 @@ public class MateriasControlador extends ControladorBase {
     
     public void guardarMatDoc(int idMateria, int idDocente) throws ControlEscolarException {
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("insert into docentes_materias (iddocente, idmateria) values (")
-                    .append(idDocente).append(", ").append(idMateria).append(")");
-            getConnection().prepareStatement(sb.toString()).executeUpdate();
+            if (!existeRelMatDoc(idMateria, idDocente)) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("insert into docentes_materias (iddocente, idmateria) values (")
+                        .append(idDocente).append(", ").append(idMateria).append(")");
+                getConnection().prepareStatement(sb.toString()).executeUpdate();
+            } else {
+                throw new ControlEscolarException("El docente ya cuenta con esa materia asignada");
+            }
         } catch (SQLException ex) {
             throw new ControlEscolarException("No se pudo guardar la relacion docente materia");
         }
     }
     
+    private boolean existeRelMatDoc(int idMateria, int idDocente) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("select count(*) conteo from docentes_materias where iddocente = ")
+                    .append(idDocente)
+                    .append(" and idmateria = ")
+                    .append(idMateria);
+            ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
+            rs.next();
+            return rs.getInt("conteo") > 0;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+    
     public void quitarMatDoc(int idMateria, int idDocente) throws ControlEscolarException {
         try {
-            getConnection().prepareStatement("delte from docentes_materias where iddocente = " + idDocente + " and idmateria = " + idMateria).executeUpdate();
+            getConnection().prepareStatement("delete from docentes_materias where iddocente = " + idDocente + " and idmateria = " + idMateria).executeUpdate();
         } catch (SQLException ex) {
             throw new ControlEscolarException("No se pudo eliminar la relacion docente - materia");
         }

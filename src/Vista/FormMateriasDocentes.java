@@ -8,6 +8,7 @@ package Vista;
 import Controlador.DocentesControlador;
 import Controlador.MateriasControlador;
 import Exceptions.ControlEscolarException;
+import Modelo.Materias;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -32,8 +33,21 @@ public class FormMateriasDocentes extends FormBase {
         cboDocentes.setModel(new DefaultComboBoxModel(docentesControlador.consultaTodos().toArray()));
         int sms = Integer.parseInt(cboSemestre.getSelectedItem().toString());
         cboMaterias.setModel(new DefaultComboBoxModel(materiasControlador.consultarPorSemestre(sms).toArray()));
+        limpiarTabla();
+        cargarMatsDoc();
+        
     }
 
+    private void cargarMatsDoc() {
+        int idDoc = getIdDoc();
+        List<Materias> mats = materiasControlador.consultaPorDocente(idDoc);
+        if (mats != null && !mats.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+            for (Materias mat : mats) {
+                model.addRow(new Object[]{mat.getIdMateria(), mat.getNombre()});
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,8 +62,7 @@ public class FormMateriasDocentes extends FormBase {
         jLabel2 = new javax.swing.JLabel();
         cboMaterias = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblResultados = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
@@ -74,11 +87,13 @@ public class FormMateriasDocentes extends FormBase {
 
         jButton1.setText("Cancelar");
 
-        jButton2.setText("Guardar");
-        jButton2.setToolTipText("");
-
-        jButton3.setText("Agregar");
-        jButton3.setToolTipText("Agrega la materia a la lista");
+        btnGuardar.setText("Agregar");
+        btnGuardar.setToolTipText("Agrega la materia a la lista");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarMateria(evt);
+            }
+        });
 
         tblResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -138,10 +153,8 @@ public class FormMateriasDocentes extends FormBase {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnGuardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton1))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -168,8 +181,7 @@ public class FormMateriasDocentes extends FormBase {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnGuardar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -187,11 +199,11 @@ public class FormMateriasDocentes extends FormBase {
         limpiarTabla();
         String doc = cboDocentes.getSelectedItem().toString();
         String[] datos = doc.split("-");
-        List<String> materias = materiasControlador.consultaPorDocente(Integer.parseInt(datos[0].trim()));
+        List<Materias> materias = materiasControlador.consultaPorDocente(Integer.parseInt(datos[0].trim()));
         if (materias != null && !materias.isEmpty()) {
             DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
-            for (String mat : materias) {
-                model.addRow(new Object[]{mat});
+            for (Materias mat : materias) {
+                model.addRow(new Object[]{mat.getIdMateria(), mat.getNombre()});
             }
         }
     }//GEN-LAST:event_consultarMateriasDoc
@@ -201,18 +213,47 @@ public class FormMateriasDocentes extends FormBase {
                     "Advertencia", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 try {
-                    String doc = cboDocentes.getSelectedItem().toString();
-                    String[] datos = doc.split("-");
-                    int idDoc = Integer.parseInt(datos[0].trim());
-                    controlador.eliminar(Integer.parseInt(txtMatricula.getText()));
+                    int idDoc = getIdDoc();
+                    int idMat = getIdMat();
+                    materiasControlador.quitarMatDoc(idMat, idDoc);
+                    DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+                    model.removeRow(tblResultados.getSelectedRow());
                     agregarMensajeExito("El alumno fue eliminado correctamente");
-                    this.dispose();
                 } catch (ControlEscolarException e) {
                     agregarMensajeError(e.getMessage());
                 }
             }
     }//GEN-LAST:event_quitarMateria
 
+    private void guardarMateria(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMateria
+        int idDoc = getIdDoc();
+        int idMat = getIdMatCbo();
+        try {
+            materiasControlador.guardarMatDoc(idMat, idDoc);
+            agregarMensajeExito("Se asignó la materia correctamente");
+            
+            limpiarTabla();
+            cargarMatsDoc();
+        } catch (ControlEscolarException ex) {
+            agregarMensajeError(ex.getMessage());
+        }
+    }//GEN-LAST:event_guardarMateria
+
+    private int getIdMat() {
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        return (Integer) model.getValueAt(tblResultados.getSelectedRow(), 0);
+    }
+    
+    private int getIdMatCbo() {
+        String doc = cboMaterias.getSelectedItem().toString();
+        String[] datos = doc.split("-");
+        return Integer.parseInt(datos[0].trim());
+    }
+    private int getIdDoc() {
+        String doc = cboDocentes.getSelectedItem().toString();
+        String[] dats = doc.split("-");
+        return Integer.parseInt(dats[0].trim());
+    }
     private void limpiarTabla() {
         DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
         while (model.getRowCount() > 0) {
@@ -221,12 +262,11 @@ public class FormMateriasDocentes extends FormBase {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cboDocentes;
     private javax.swing.JComboBox<String> cboMaterias;
     private javax.swing.JComboBox<String> cboSemestre;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
