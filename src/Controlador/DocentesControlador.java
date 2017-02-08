@@ -165,4 +165,18 @@ public class DocentesControlador extends ControladorBase {
         }
         return lista;
     }
+    
+    public List<String> consultaTodos(){
+        try {
+            List<String> lista = new ArrayList<>();
+            ResultSet rs = getConnection().prepareStatement("select concat(iddocente, ' - ', apepaterno, ' ', apematerno, ' ', nombre) nombre "
+                    + "from docentes order by nombre").executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("nombre"));
+            }
+            return lista;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 }

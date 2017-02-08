@@ -180,6 +180,7 @@ public class FormMaterias extends FormBase {
     private void guardarMateria(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMateria
         if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
             agregarMensajeAdvertencia("EL NOMBRE ES REQUERIDO");
+            return;
         }
         if (materia == null) {
             materia = new Materias();
@@ -189,8 +190,6 @@ public class FormMaterias extends FormBase {
         
         try {
             materia = controlador.guardar(materia);
-            DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
-            model.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), materia.getSemestre()});
             agregarMensajeExito("La materia se guardo correctamente");
         } catch (ControlEscolarException ex) {
             agregarMensajeError(ex.getMessage());
@@ -227,7 +226,7 @@ public class FormMaterias extends FormBase {
         if (txtNombre.getText() != null && !txtNombre.getText().isEmpty()) {
             materia.setNombre(txtNombre.getText());
         }
-        materia.setSemestre((Integer) cboSemestre.getSelectedItem());
+        materia.setSemestre(Integer.parseInt(cboSemestre.getSelectedItem().toString()));
         try {
             limpiarTabla();
             List<Materias> materias = controlador.buscar(materia);

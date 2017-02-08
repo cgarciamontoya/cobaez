@@ -45,7 +45,7 @@ public class MateriasControlador extends ControladorBase {
                 ps.executeUpdate();
                 return getById(mat.getIdMateria());
             } else {
-                ps = con.prepareStatement(mat.toString(), Statement.RETURN_GENERATED_KEYS);
+                ps = con.prepareStatement(sb.toString(), Statement.RETURN_GENERATED_KEYS);
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
@@ -104,6 +104,57 @@ public class MateriasControlador extends ControladorBase {
             return lista;
         } catch (SQLException ex) {
             return null;
+        }
+    }
+    
+    public List<String> consultarPorSemestre(int semestre) {
+        try {
+            List<String> lista = new ArrayList<>();
+            ResultSet rs = getConnection().prepareStatement("select concat(idmateria, ' - ', nombre) nombre from materias where semestre = " + semestre + " order by nombre")
+                    .executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("nombre"));
+            }
+            return lista;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
+    public List<String> consultaPorDocente(int idDocente) {
+        try {
+            List<String> lista = new ArrayList<>();
+            StringBuilder sb = new StringBuilder();
+            sb.append("select concat(m.idmateria, ' - ', m.nombre) nombre from docentes_materias dm ")
+                    .append("inner join docentes d on d.iddocente = dm.iddocente ")
+                    .append("inner join materias m on m.idmateria = dm.idmateria order by nombre");
+            ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("nombre"));
+            }
+            return lista;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
+    public void guardarMatDoc(int idMateria, int idDocente) throws ControlEscolarException {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("insert into docentes_materias (iddocente, idmateria) values (")
+                    .append(idDocente).append(", ").append(idMateria).append(")");
+            getConnection().prepareStatement(sb.toString()).executeUpdate();
+        } catch (SQLException ex) {
+            throw new ControlEscolarException("No se pudo guardar la relacion docente materia");
+        }
+    }
+    
+    public void quitarMatDoc(int idMateria, int idDocente) throws ControlEscolarException {
+        try {
+            getConnection().prepareStatement("delte from docentes_materias where iddocente = " + idDocente + " and idmateria = " + idMateria).executeUpdate();
+        } catch (SQLException ex) {
+            throw new ControlEscolarException("No se pudo eliminar la relacion docente - materia");
         }
     }
 }
