@@ -5,17 +5,23 @@
  */
 package Vista;
 
+import Controlador.UsuariosControlador;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author cgarcia
  */
-public class FormLogin extends javax.swing.JInternalFrame {
+public class FormLogin extends javax.swing.JFrame {
+    
+    private UsuariosControlador usuarios;
 
     /**
      * Creates new form FormLogin
      */
     public FormLogin() {
         initComponents();
+        usuarios = new UsuariosControlador();
     }
 
     /**
@@ -50,6 +56,11 @@ public class FormLogin extends javax.swing.JInternalFrame {
         jLabel5.setText("Password");
 
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                login(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,6 +112,56 @@ public class FormLogin extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void login(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login
+        if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El usuario es requerido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (txtPassword.getText() == null || txtPassword.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El password es requerido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        boolean exito = usuarios.login(txtUsuario.getText(), txtPassword.getText());
+        if (exito) {
+            new jfrmprincipal().setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "El usuario/password son incorrectos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_login
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(jfrmprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(jfrmprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(jfrmprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(jfrmprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FormLogin().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;

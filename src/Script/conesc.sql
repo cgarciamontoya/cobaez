@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `alumnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alumnos` (
-  `idAlumno` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Grupos_idGrupo` int(10) unsigned NOT NULL,
+  `idAlumno` int(10) NOT NULL AUTO_INCREMENT,
+  `Grupos_idGrupo` int(10) NOT NULL,
   `Nombre` varchar(45) DEFAULT NULL,
   `Apepaterno` varchar(45) DEFAULT NULL,
   `Apematerno` varchar(45) DEFAULT NULL,
@@ -40,8 +40,8 @@ CREATE TABLE `alumnos` (
   `activo` smallint(1) DEFAULT NULL,
   PRIMARY KEY (`idAlumno`),
   KEY `Alunmos_FKIndex1` (`Grupos_idGrupo`),
-  CONSTRAINT `alumnos_ibfk_1` FOREIGN KEY (`Grupos_idGrupo`) REFERENCES `grupos` (`idGrupo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_al_gpos` FOREIGN KEY (`Grupos_idGrupo`) REFERENCES `grupos` (`idGrupo`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,8 +50,41 @@ CREATE TABLE `alumnos` (
 
 LOCK TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (1,1,'CARLOS','GARCIA','MONTOYA','2000-11-15','96543902','GAMC001115HZSRNR03','SONIA JAZMIN GARCIA SILVA','O+','16161616166','MASCULINO','2017-01-31','2017-02-01',1),(2,1,'FRANCISCO','LOPEZ','MARTINEZ','2002-11-15','93212',NULL,'FRANCISCO LOPEZ HERNANDEZ','O+','123455','MASCULINO','2017-02-01','2017-02-01',1);
+INSERT INTO `alumnos` VALUES (1,1,'CARLOS','GARCIA','MONTOYA','2000-11-15','96543902','GAMC001115HZSRNR03','SONIA JAZMIN GARCIA SILVA','O+','16161616166','MASCULINO','2017-01-31','2017-02-01',1),(2,1,'FRANCISCO','LOPEZ','MARTINEZ','2002-11-15','93212',NULL,'FRANCISCO LOPEZ HERNANDEZ','O+','123455','MASCULINO','2017-02-01','2017-02-01',1),(3,2,'JOSE','PEREZ','LEON','2002-10-10','9844332',NULL,'JOSE PEREZ LEON PADRE','O+','234343','MASCULINO','2017-02-09','2017-02-09',1);
 /*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cardex`
+--
+
+DROP TABLE IF EXISTS `cardex`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cardex` (
+  `id_alumno` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `parcial_1` float DEFAULT NULL,
+  `parcial_2` float DEFAULT NULL,
+  `parcial_3` float DEFAULT NULL,
+  `ordinario` float DEFAULT NULL,
+  `extraordinario` float DEFAULT NULL,
+  `titulo` float DEFAULT NULL,
+  KEY `crdx_idx_alumno` (`id_alumno`,`id_materia`),
+  KEY `fk_crdx_mats` (`id_materia`),
+  CONSTRAINT `fk_crdx_alumnos` FOREIGN KEY (`id_alumno`) REFERENCES `alumnos` (`idAlumno`),
+  CONSTRAINT `fk_crdx_mats` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`idMateria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cardex`
+--
+
+LOCK TABLES `cardex` WRITE;
+/*!40000 ALTER TABLE `cardex` DISABLE KEYS */;
+INSERT INTO `cardex` VALUES (1,2,10,10,10,0,0,0),(1,1,9,9,9,0,0,0),(1,3,8,8,7,0,0,0);
+/*!40000 ALTER TABLE `cardex` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -108,6 +141,7 @@ CREATE TABLE `docentes_materias` (
 
 LOCK TABLES `docentes_materias` WRITE;
 /*!40000 ALTER TABLE `docentes_materias` DISABLE KEYS */;
+INSERT INTO `docentes_materias` VALUES (1,1);
 /*!40000 ALTER TABLE `docentes_materias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,7 +176,7 @@ DROP TABLE IF EXISTS `grupos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `grupos` (
-  `idGrupo` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idGrupo` int(10) NOT NULL AUTO_INCREMENT,
   `Grupo` varchar(20) DEFAULT NULL,
   `Semestre` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idGrupo`)
@@ -186,6 +220,31 @@ INSERT INTO `materias` VALUES (1,'MATEMATICAS',1),(2,'ESPAÑOL',1),(3,'QUIMICA I
 UNLOCK TABLES;
 
 --
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usuarios` (
+  `username` varchar(15) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES ('admin','cobaez');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping events for database 'conesc'
 --
 
@@ -202,4 +261,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-08 13:11:34
+-- Dump completed on 2017-02-09 15:43:33

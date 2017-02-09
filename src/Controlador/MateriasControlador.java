@@ -122,6 +122,24 @@ public class MateriasControlador extends ControladorBase {
         }
     }
     
+    public List<Materias> consultarMateriasSemestre(int semestre) {
+        try {
+            ResultSet rs = getConnection().prepareStatement("select idmateria, nombre, semestre from materias where semestre = " + semestre + " order by nombre")
+                    .executeQuery();
+            List<Materias> mats = new ArrayList<>();
+            while (rs.next()) {
+                Materias mat = new Materias();
+                mat.setIdMateria(rs.getInt("idmateria"));
+                mat.setNombre(rs.getString("nombre"));
+                mat.setSemestre(rs.getInt("semestre"));
+                mats.add(mat);
+            }
+            return mats;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
     public List<Materias> consultaPorDocente(int idDocente) {
         try {
             List<Materias> lista = new ArrayList<>();

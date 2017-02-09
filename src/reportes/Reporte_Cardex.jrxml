@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Cardex" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30fd7363-15ee-4c76-876b-5a3e0234848b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="grupo" class="java.lang.String"/>
+	<parameter name="alumno" class="java.lang.String"/>
+	<parameter name="idAlumno" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select m.nombre materia, c.parcial_1 p1, c.parcial_2 p2, c.parcial_3 p3, c.ordinario ord, c.extraordinario ext, c.titulo tit from cardex c inner join materias m on m.idmateria = c.id_materia where c.id_alumno = $P{idAlumno}]]>
+	</queryString>
+	<field name="materia" class="java.lang.String"/>
+	<field name="p1" class="java.lang.Float"/>
+	<field name="p2" class="java.lang.Float"/>
+	<field name="p3" class="java.lang.Float"/>
+	<field name="ord" class="java.lang.Float"/>
+	<field name="ext" class="java.lang.Float"/>
+	<field name="tit" class="java.lang.Float"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20" uuid="fbc2b793-6a11-45db-806d-3c62d576aa06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COLEGIO DE BACHILLERES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="572" height="20" uuid="b2822457-5b7c-44f1-b390-544cb10c3740"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Plantel 02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="572" height="20" uuid="77f89f5a-f142-4d44-83a0-ab55a9a5e38e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VILLA GONZALEZ ORTEGA]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="100" height="67" uuid="fd4b9e3b-9482-44f6-80a6-863c33a07170"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20" uuid="a4fdac31-3b5e-4880-ab19-b0d227e37d70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARDEX DE CALIFICACIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="20" width="42" height="20" uuid="b0d0f446-74dc-44ee-91b5-9fea709fa8a1"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Grupo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="20" width="100" height="20" uuid="a50b1c8d-4b7b-41b1-8329-d575e99cd138"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{grupo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="46" height="20" uuid="4855dd63-41dc-45d6-9047-b555bbe48f76"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="20" width="363" height="20" uuid="faa1711c-14d2-4487-984d-6967d0068286"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{alumno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="570" height="20" backcolor="#99FF99" uuid="ea941ab9-1859-45f0-8c38-d5f3ab2e8da5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="411" y="0" width="40" height="20" uuid="67f89b1b-160c-4036-bc43-3890044b485a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="332" height="20" uuid="b338656b-9fdf-43a2-b12e-40650e4d9b74"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATERIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="40" height="20" uuid="356384ee-d2fd-4679-baec-a108e20af36f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="40" height="20" uuid="50c27972-0bc5-4248-bbd6-9df442f04c24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="0" width="40" height="20" uuid="ef05ec5b-12aa-43f7-86da-cdf2b6054e2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="0" width="40" height="20" uuid="5f50e61c-350a-445b-83ac-d604eeda8d0e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="0" width="40" height="20" uuid="78077132-7b85-4e12-89ed-3c63d544ba12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P2]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="570" height="20" backcolor="#CCCCCC" uuid="69d63a38-20ce-45e8-b13b-4c77e8dc36c7">
+					<printWhenExpression><![CDATA[($V{REPORT_COUNT} % 2) == 0]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="332" height="20" uuid="2a2329ba-2ec1-4a3b-9796-0fb8866139a8"/>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="0" width="40" height="20" uuid="ca5cfa79-0abb-406f-a8ce-81ab4c1157d4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="372" y="0" width="40" height="20" uuid="71c23705-2ffc-407d-9a3b-27f298e4e140"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="411" y="0" width="40" height="20" uuid="36dd0917-2ced-41a4-a42e-b2bb6fda137a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="450" y="0" width="40" height="20" uuid="c071c071-b7ce-4362-a978-0434ca13a1ba"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ord}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="40" height="20" uuid="0af65b24-31e6-4d01-a78a-fca010c8ed66"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ext}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="530" y="0" width="40" height="20" uuid="cab068e5-92d0-463a-a769-bf175a912ea8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="0" width="80" height="20" uuid="d9ae7d2b-9958-48cf-a6bc-f4bf21dc14e8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="530" y="0" width="40" height="20" uuid="2c5d0446-1971-44cd-a430-90847f97512a"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEE, d MMM yyyy HH:mm:ss">
+				<reportElement x="0" y="2" width="100" height="20" uuid="d5eddcdb-248b-4280-9440-fda2ecb8cb42"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

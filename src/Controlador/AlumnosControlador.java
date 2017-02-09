@@ -252,4 +252,22 @@ public class AlumnosControlador extends ControladorBase {
                     .append("inner join grupos g on g.idgrupo = a.grupos_idgrupo ");
         return sb.toString();
     }
+    
+    public List<String> consultaNombreAlumnos(int grupo) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("select idalumno, concat(apepaterno, ' ', apematerno, ' ', nombre) nombre from alumnos ")
+                    .append("where grupos_idgrupo = ")
+                    .append(grupo)
+                    .append(" order by nombre");
+            ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
+            List<String> als = new ArrayList<>();
+            while (rs.next()) {
+                als.add(rs.getInt("idalumno") + " - " + rs.getString("nombre"));
+            }
+            return als;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 }
