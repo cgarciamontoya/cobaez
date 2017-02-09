@@ -5,17 +5,64 @@
  */
 package Vista;
 
+import Controlador.AlumnosControlador;
+import Controlador.CardexControlador;
+import Controlador.CatalogosControlador;
+import Controlador.MateriasControlador;
+import Exceptions.ControlEscolarException;
+import Modelo.Alumnos;
+import Modelo.Cardex;
+import Modelo.Grupos;
+import Modelo.Materias;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author cgarcia
  */
-public class FormAlumnosCardex extends javax.swing.JInternalFrame {
+public class FormAlumnosCardex extends FormBase {
 
+    private AlumnosControlador alumnosControlador;
+    private CatalogosControlador catalogosControlador;
+    private MateriasControlador materiasControlador;
+    private CardexControlador cardexControlador;
+    
     /**
      * Creates new form FormAlumnosCardex
      */
     public FormAlumnosCardex() {
         initComponents();
+        alumnosControlador = new AlumnosControlador();
+        catalogosControlador = new CatalogosControlador();
+        materiasControlador = new MateriasControlador();
+        cardexControlador = new CardexControlador();
+        
+        List<String> grupos = catalogosControlador.consultaGrupos();
+        cboGrupo.setModel(new DefaultComboBoxModel(grupos.toArray()));
+        
+        List<String> als = alumnosControlador.consultaNombreAlumnos(getIdGrupo());
+        cboAlumnos.setModel(new DefaultComboBoxModel(als.toArray()));
+            
+    }
+    
+    private void limpiarTabla() {
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+    }
+    
+    private int getIdGrupo() {
+        Grupos gpo = catalogosControlador.consultaGrupo(cboGrupo.getSelectedItem().toString());
+        return gpo != null && gpo.getIdGrupo() != null ? gpo.getIdGrupo() : 0;
+    }
+    
+    private int getIdAlumno() {
+        String al = cboAlumnos.getSelectedItem().toString();
+        String[] datos = al.split("-");
+        return Integer.parseInt(datos[0].trim());
     }
 
     /**
@@ -28,14 +75,14 @@ public class FormAlumnosCardex extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboGrupo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        cboAlumnos = new javax.swing.JComboBox<>();
+        btnAbrir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        tblResultados = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -44,18 +91,28 @@ public class FormAlumnosCardex extends javax.swing.JInternalFrame {
 
         jLabel1.setText("GRUPO");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 A", "1B", "1C" }));
+        cboGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 A", "1B", "1C" }));
+        cboGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultaAlumno(evt);
+            }
+        });
 
         jLabel2.setText("ALUMNO");
 
-        jButton1.setText("Abrir");
+        btnAbrir.setText("Abrir");
+        btnAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarCardex(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Materia", "Parcial 1", "Parcial 2", "Parcial 3", "Ordinario", "Extraordinario", "Título"
+                "ID", "Materia", "P1", "P2", "P3", "OR", "EX", "TI"
             }
         ) {
             Class[] types = new Class [] {
@@ -73,11 +130,21 @@ public class FormAlumnosCardex extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblResultados);
 
-        jButton2.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarCardex(evt);
+            }
+        });
 
-        jButton3.setText("Guardar");
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarCalificaciones(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,18 +157,18 @@ public class FormAlumnosCardex extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cboAlumnos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
+                        .addComponent(btnAbrir))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(btnCancelar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -110,32 +177,113 @@ public class FormAlumnosCardex extends javax.swing.JInternalFrame {
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(cboAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAbrir))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnGuardar))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cancelarCardex(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCardex
+        this.dispose();
+    }//GEN-LAST:event_cancelarCardex
+
+    private void guardarCalificaciones(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCalificaciones
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        int idAlumno = getIdAlumno();
+        boolean error = false;
+        if (model.getRowCount() > 0) {
+            for (int i = 0; i < model.getRowCount(); i++) {
+                Cardex c = new Cardex();
+                c.setIdAlumno(idAlumno);
+                c.setIdMateria((Integer) model.getValueAt(i, 0));
+                c.setParcial1((Float) model.getValueAt(i, 2));
+                c.setParcial2((Float) model.getValueAt(i, 3));
+                c.setParcial3((Float) model.getValueAt(i, 4));
+                c.setOrdinario((Float) model.getValueAt(i, 5));
+                c.setExtraordinario((Float) model.getValueAt(i, 6));
+                c.setTitulo((Float) model.getValueAt(i, 7));
+                if (cardexValido(c)) {
+                    try {
+                        cardexControlador.actualizarCardex(c);
+                    } catch (ControlEscolarException ex) {
+                        agregarMensajeError(ex.getMessage());
+                        error = true;
+                        break;
+                    }
+                } else {
+                    agregarMensajeError("Las calificaciones no debe ser mayor a 10");
+                    error = true;
+                    break;
+                }
+            }
+        }
+        if (!error) {
+            agregarMensajeExito("Se guardaron correctamente las calificaciones");
+        }
+    }//GEN-LAST:event_guardarCalificaciones
+
+    private boolean cardexValido(Cardex c) {
+        boolean valido = true;
+        if (c.getParcial1() != null && c.getParcial1() > 10) {
+            valido = false;
+        }
+        if (c.getParcial2() != null && c.getParcial2() > 10) {
+            valido = false;
+        }
+        if (c.getParcial3() != null && c.getParcial3() > 10) {
+            valido = false;
+        }
+        if (c.getOrdinario() != null && c.getOrdinario() > 10) {
+            valido = false;
+        }
+        if (c.getExtraordinario() != null && c.getExtraordinario() > 10) {
+            valido = false;
+        }
+        if (c.getTitulo() != null && c.getTitulo() > 10) {
+            valido = false;
+        }
+        return valido;
+    }
+    private void cargarCardex(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarCardex
+        Alumnos al = alumnosControlador.getById(getIdAlumno());
+        List<Materias> materias = materiasControlador.consultarMateriasSemestre(
+                Integer.parseInt(al.getGrupo().getSemestre()));
+        limpiarTabla();
+        DefaultTableModel model = (DefaultTableModel) tblResultados.getModel();
+        for (Materias mat : materias) {
+            Cardex cardex = cardexControlador.consultaCardex(al.getIdAlumno(), mat);
+            model.addRow(new Object[]{cardex.getIdMateria(), cardex.getNombreMateria(),
+                    cardex.getParcial1(), cardex.getParcial2(), cardex.getParcial3(), 
+                    cardex.getOrdinario(), cardex.getExtraordinario(), cardex.getTitulo()});
+        }
+    }//GEN-LAST:event_cargarCardex
+
+    private void consultaAlumno(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaAlumno
+        limpiarTabla();
+        List<String> als = alumnosControlador.consultaNombreAlumnos(getIdGrupo());
+        cboAlumnos.setModel(new DefaultComboBoxModel(als != null && !als.isEmpty() ? als.toArray() : new String[0]));
+    }//GEN-LAST:event_consultaAlumno
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnAbrir;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cboAlumnos;
+    private javax.swing.JComboBox<String> cboGrupo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblResultados;
     // End of variables declaration//GEN-END:variables
 }

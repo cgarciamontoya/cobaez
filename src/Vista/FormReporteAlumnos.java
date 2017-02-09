@@ -5,17 +5,32 @@
  */
 package Vista;
 
+import Controlador.CatalogosControlador;
+import Controlador.ReportesControlador;
+import Exceptions.ControlEscolarException;
+import Modelo.Grupos;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author cgarcia
  */
-public class FormReporteAlumnos extends javax.swing.JInternalFrame {
+public class FormReporteAlumnos extends FormBase {
+    
+    private static final String URL_REPORTE = "c:\\cobaez\\";
 
+    private CatalogosControlador catalogos;
+    private ReportesControlador reportes;
     /**
      * Creates new form FormReporteAlumnos
      */
     public FormReporteAlumnos() {
         initComponents();
+        catalogos = new CatalogosControlador();
+        reportes = new ReportesControlador();
+        cboGrupo.setModel(new DefaultComboBoxModel(catalogos.consultaGrupos().toArray()));
     }
 
     /**
@@ -28,8 +43,8 @@ public class FormReporteAlumnos extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        cboGrupo = new javax.swing.JComboBox<>();
+        btnExportar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setClosable(true);
@@ -38,9 +53,14 @@ public class FormReporteAlumnos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("GRUPO");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 A", "1 B", "1 C" }));
+        cboGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 A", "1 B", "1 C" }));
 
-        jButton1.setText("Exportar");
+        btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportarReporte(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
@@ -54,9 +74,9 @@ public class FormReporteAlumnos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(cboGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnExportar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -67,10 +87,10 @@ public class FormReporteAlumnos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnExportar)
                     .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -78,11 +98,21 @@ public class FormReporteAlumnos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void exportarReporte(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarReporte
+        Grupos gpo = catalogos.consultaGrupo(cboGrupo.getSelectedItem().toString());
+        
+        try {
+            reportes.exportarAlumnos(gpo);
+        } catch (ControlEscolarException ex) {
+            agregarMensajeError(ex.getMessage());
+        }
+    }//GEN-LAST:event_exportarReporte
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnExportar;
+    private javax.swing.JComboBox<String> cboGrupo;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
