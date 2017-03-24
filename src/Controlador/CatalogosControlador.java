@@ -54,4 +54,17 @@ public class CatalogosControlador extends ControladorBase {
             return null;
         }
     }
+    
+    public List<String> consultarHoras() {
+        List<String> datos = new ArrayList<>();
+        try {
+            ResultSet rs = getConnection().prepareStatement("select concat(id, ' - ', inicio, ' - ', fin) nombre from horas").executeQuery();
+            while (rs.next()) {
+                datos.add(rs.getString("nombre"));
+            }
+            return datos;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 }

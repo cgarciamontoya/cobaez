@@ -29,6 +29,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -47,9 +48,13 @@ public class jfrmprincipal extends javax.swing.JFrame {
         menuReportes = new javax.swing.JMenu();
         mnuRepAlumnos = new javax.swing.JMenuItem();
         mnuRepCalificaciones = new javax.swing.JMenuItem();
+        mnuHorarios = new javax.swing.JMenu();
         menuSalir = new javax.swing.JMenu();
 
+        jMenu1.setText("jMenu1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 550));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -63,10 +68,6 @@ public class jfrmprincipal extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("VILLA GONZALEZ ORTEGA");
 
-        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
@@ -77,7 +78,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addContainerGap(369, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,6 +91,9 @@ public class jfrmprincipal extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addContainerGap(290, Short.MAX_VALUE))
         );
+        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         menuAlumnos.setText("Alumnos");
 
@@ -188,6 +192,18 @@ public class jfrmprincipal extends javax.swing.JFrame {
         menuReportes.add(mnuRepCalificaciones);
 
         menu.add(menuReportes);
+
+        mnuHorarios.setText("Horario");
+        mnuHorarios.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                horario(evt);
+            }
+        });
+        menu.add(mnuHorarios);
 
         menuSalir.setText("Salir");
         menuSalir.addMenuListener(new javax.swing.event.MenuListener() {
@@ -288,6 +304,12 @@ public class jfrmprincipal extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_salir
 
+    private void horario(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_horario
+        FormHorario horario = new FormHorario();
+        jDesktopPane1.add(horario);
+        horario.show();
+    }//GEN-LAST:event_horario
+
     /**
      * @param args the command line arguments
      */
@@ -298,6 +320,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAlumnos;
@@ -309,6 +332,7 @@ public class jfrmprincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAlConsulta;
     private javax.swing.JMenuItem mnuDocConsulta;
     private javax.swing.JMenuItem mnuDocRegistro;
+    private javax.swing.JMenu mnuHorarios;
     private javax.swing.JMenuItem mnuMatDocentes;
     private javax.swing.JMenuItem mnuMatRegistro;
     private javax.swing.JMenuItem mnuRepAlumnos;

@@ -44,7 +44,7 @@ public class FormLogin extends javax.swing.JFrame {
 
         jLabel4.setText("jLabel4");
 
-        setResizable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LOGIN");
 
         jLabel1.setText("SISTEMA CONTROL ESCOLAR");
