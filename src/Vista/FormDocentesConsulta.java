@@ -203,6 +203,8 @@ public class FormDocentesConsulta extends FormBase {
             } catch (ControlEscolarException ex) {
                 agregarMensajeError("No fue posible consultar los alumnos debido a: " + ex.getMessage());
             }
+        } else {
+            agregarMensajeAdvertencia("Debe ingresar al menos un criterio de búsqueda");
         }
     }//GEN-LAST:event_buscarDocentes
     private void limpiarTabla() {

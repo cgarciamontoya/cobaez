@@ -146,7 +146,9 @@ public class MateriasControlador extends ControladorBase {
             StringBuilder sb = new StringBuilder();
             sb.append("select m.idmateria, m.nombre, m.semestre from docentes_materias dm ")
                     .append("inner join docentes d on d.iddocente = dm.iddocente ")
-                    .append("inner join materias m on m.idmateria = dm.idmateria order by nombre");
+                    .append("inner join materias m on m.idmateria = dm.idmateria ")
+                    .append("where d.iddocente = ").append(idDocente)
+                    .append(" order by nombre");
             ResultSet rs = getConnection().prepareStatement(sb.toString()).executeQuery();
             while (rs.next()) {
                 Materias mat = new Materias();

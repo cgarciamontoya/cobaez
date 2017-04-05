@@ -126,19 +126,19 @@ public class DocentesControlador extends ControladorBase {
                         .append(docs.getNumEmpleados().trim()).append("' ");
             }
             if (docs.getNombre() != null && !docs.getNombre().isEmpty()) {
-                if (sb.toString().endsWith("where ")) {
+                if (!sb.toString().endsWith("where ")) {
                     sb.append("and ");
                 }
                 sb.append("nombre = '").append(docs.getNombre().trim().toUpperCase()).append("' ");
             }
             if (docs.getApepaterno() != null && !docs.getApepaterno().isEmpty()) {
-                if (sb.toString().endsWith("where ")) {
+                if (!sb.toString().endsWith("where ")) {
                     sb.append("and ");
                 }
-                sb.append("apepaterno = '").append(docs.getApepaterno().trim().toUpperCase()).append("', ");
+                sb.append("apepaterno = '").append(docs.getApepaterno().trim().toUpperCase()).append("' ");
             }
             if (docs.getApematerno() != null && !docs.getApematerno().isEmpty()) {
-                if (sb.toString().endsWith("where ")) {
+                if (!sb.toString().endsWith("where ")) {
                     sb.append("and ");
                 }
                 sb.append("apematerno = '").append(docs.getApematerno().trim().toUpperCase()).append("' ");
